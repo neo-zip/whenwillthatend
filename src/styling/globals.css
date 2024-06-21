@@ -1,0 +1,398 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.mount.dark {
+	--bg-low: #111212;
+	--bg-normal: #212121;
+	--bg-high: #555555;
+
+	--text-low: #dbdde0;
+	--text-normal: #e8eaed;
+	--text-high: #ffffff;
+
+	--shadow: rgba(0, 0, 0, 0.3) 0px 5px 10px;
+	--button-color: #ffffff33;
+
+	--disabled: #333333;
+	--muted: color-mix(in srgb, var(--color, var(--bg-normal)) 75%, #0000);
+}
+
+.mount.light {
+	--bg-low: #f1f1f1;
+	--bg-normal: #ffffff;
+	--bg-high: #999999;
+
+	--text-low: #212121;
+	--text-normal: #111111;
+	--text-high: #000000;
+
+	--shadow: rgba(50, 50, 93, 0.1) 0px 13px 27px -5px, rgba(0, 0, 0, 0.1) 0px 8px 16px -8px;
+	--button-color: #00000033;
+
+	--disabled: #aaaaaa;
+	--muted: color-mix(in srgb, var(--color, var(--bg-normal)) 75%, #fff0);
+}
+
+:root {
+	--success: #0b953b;
+	--warn: #f8be1b;
+	--error: #aa0000;
+	--link: #539bf5;
+
+	--transition: cubic-bezier(0, 1, 0.74, 1) 0.3s;
+
+	--border-radius: 15px;
+	--focus: 4px solid var(--link);
+
+	--font-mono: 'Roboto Mono', ui-monospace, monospace;
+
+	font-size: 16px;
+	line-height: 1;
+	font-weight: 400;
+
+	box-sizing: border-box;
+	font-synthesis: none;
+	text-rendering: optimizeLegibility;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	-webkit-text-size-adjust: 100%;
+
+	color-scheme: light dark;
+}
+
+::-webkit-scrollbar {
+	width: 20px;
+}
+
+::-webkit-scrollbar-track {
+	background-color: var(--bg-normal);
+}
+
+::-webkit-scrollbar-thumb {
+	border: 6px solid var(--bg-normal);
+	background-color: var(--button-color);
+	border-radius: var(--border-radius);
+}
+
+::-webkit-scrollbar-thumb:hover {
+	background-color: var(--button-color);
+}
+
+/* regular */
+
+* {
+	position: relative;
+	margin: 0;
+	padding: 0;
+	user-select: none;
+	box-sizing: border-box;
+}
+
+*:focus {
+	border: none;
+	outline: none;
+}
+
+html,
+body {
+	height: 100%;
+	width: 100%;
+}
+
+.mount {
+	color: var(--text-normal);
+	fill: var(--text-normal);
+
+	background-color: var(--bg-normal);
+
+	transition: var(--transition);
+	scroll-behavior: smooth;
+}
+
+html,
+body,
+.mount {
+	display: flex;
+	flex-direction: column;
+
+	overflow: hidden;
+}
+
+.scroll {
+	position: relative;
+
+	overflow-x: hidden;
+	overflow-y: scroll;
+}
+
+.scroll.locked {
+	width: calc(100% - 20px);
+
+	overflow-y: hidden;
+}
+
+@media (pointer: none), (pointer: coarse) {
+	.scroll.locked {
+		width: 100%;
+	}
+}
+
+h1 {
+	font-size: 5em;
+	font-weight: bold;
+}
+
+h2 {
+	font-size: 3em;
+	font-weight: bold;
+}
+
+h3 {
+	font-size: 2em;
+	font-weight: normal;
+}
+
+/* reset */
+
+a {
+	display: inline-flex;
+	color: inherit;
+	text-decoration: none;
+}
+
+hr {
+	border: none;
+}
+
+p,
+i,
+b,
+span,
+code {
+	color: inherit;
+	user-select: text;
+}
+
+code {
+	font-family: var(--font-mono);
+}
+
+button {
+	background-color: transparent;
+	outline: none;
+	border: none;
+	font-family: inherit;
+	font-size: inherit;
+	color: inherit;
+	user-select: none;
+}
+
+/* usual classes */
+
+.center {
+	display: grid;
+	place-items: center;
+}
+
+.hr {
+	margin: 15px 0;
+	border: 1px solid var(--button-color);
+}
+
+.input {
+	padding: 20px 20px;
+	margin-bottom: 15px;
+
+	height: 50px;
+	min-width: 400px;
+
+	border: none;
+	resize: none;
+
+	background-color: transparent;
+	border: 2px solid var(--button-color);
+	border-radius: var(--border-radius);
+
+	color: var(--text-h1);
+	font-size: 16px;
+
+	transition: var(--transition);
+}
+
+.input:focus {
+	border: 2px solid var(--link);
+}
+
+/* buttons */
+
+.button {
+	position: relative;
+
+	display: flex;
+	align-items: center;
+	gap: 10px;
+
+	background-color: var(--button-color);
+	border: 3px solid transparent;
+	outline: 3px solid transparent;
+	background-clip: padding-box;
+
+	margin: 2px;
+	padding: 10px 20px;
+
+	font-weight: bold;
+	font-size: 16px;
+
+	color: var(--text-h1);
+	fill: var(--text-h3);
+
+	cursor: pointer;
+
+	border-radius: var(--border-radius);
+	transition: var(--transition);
+}
+
+.button:focus {
+	background-color: var(--button-color);
+	outline: 3px solid transparent;
+}
+
+.button:hover {
+	outline: 3px solid var(--color, var(--button-color));
+}
+
+.button:focus-visible {
+	background-color: var(--button-color);
+	outline: 3px solid var(--link);
+}
+
+.button:active {
+	animation: pulse var(--transition) forwards;
+}
+
+@keyframes pulse {
+	from {
+		transform: scale(0.95);
+	}
+
+	to {
+		transform: scale(1);
+	}
+}
+
+.link {
+	cursor: pointer;
+	display: inline-flex;
+	color: var(--link);
+}
+
+.link:hover,
+.link:focus-visible {
+	text-decoration: underline;
+}
+
+.icon {
+	border-radius: 50%;
+	fill: var(--text-h1);
+	transition: var(--transition);
+	display: inline-flex;
+	padding: 10px;
+	cursor: pointer;
+	backdrop-filter: blur(20px);
+	background-color: var(--button-color);
+}
+
+.icon:hover,
+.icon:focus-visible {
+	background-color: var(--button-color);
+}
+
+.icon:focus-visible {
+	outline: var(--focus);
+}
+
+.anchor {
+	vertical-align: bottom;
+	display: inline-flex;
+	align-items: center;
+	gap: 10px;
+
+	transition: var(--transition);
+
+	padding: 0 10px;
+	border-radius: var(--border-radius);
+	background-color: var(--muted);
+
+	fill: var(--link);
+	color: var(--link);
+}
+
+.anchor:hover {
+	background-color: var(--bg-normal);
+}
+
+.disabled {
+	color: var(--disabled) !important;
+	fill: var(--disabled) !important;
+	cursor: not-allowed !important;
+}
+
+.muted {
+	color: var(--muted) !important;
+	fill: var(--muted) !important;
+	cursor: not-allowed !important;
+}
+
+/* text */
+
+.label {
+	font-size: 0.8em;
+	text-transform: uppercase;
+	font-weight: bold;
+	user-select: none;
+	color: var(--bg-high);
+}
+
+.error {
+	color: var(--error);
+	font-weight: bold;
+}
+
+.tooltip {
+	z-index: 100;
+	font-weight: bold;
+	font-size: 1.2em;
+
+	border-radius: var(--border-radius);
+
+	pointer-events: none;
+
+	width: auto;
+
+	display: grid;
+	place-items: center;
+
+	position: absolute;
+	left: 0;
+	bottom: 100%;
+
+	padding: 10px 15px;
+	white-space: nowrap;
+}
+
+.light .tooltip {
+	background-color: var(--text-normal);
+	color: var(--bg-normal);
+}
+
+.dark .tooltip {
+	background-color: var(--text-normal);
+	color: var(--bg-normal);
+}
+
+@media only screen and (max-width: 700px) {
+	h1 {
+		font-size: 2em;
+	}
+}
