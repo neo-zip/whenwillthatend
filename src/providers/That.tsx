@@ -12,19 +12,21 @@ const data: That[] = [
 	{
 		name: 'summer break',
 		dates: {
+			start: new Date(2024, 5, 1),
 			end: new Date(2024, 7, 12),
 		},
 	},
 	{
 		name: 'Today',
 		dates: {
-			end: new Date(2024, 5, 21),
+			start: new Date(2024, 5, 21),
+			end: new Date(2024, 5, 22),
 		},
 	},
 	{
 		name: 'Tomorrow',
 		dates: {
-			end: new Date(2024, 5, 22),
+			end: new Date(2024, 5, 23),
 		},
 	},
 ];

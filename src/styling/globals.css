@@ -7,7 +7,7 @@
 	--bg-normal: #212121;
 	--bg-high: #555555;
 
-	--text-low: #dbdde0;
+	--text-low: #c4c6c9;
 	--text-normal: #e8eaed;
 	--text-high: #ffffff;
 
@@ -15,7 +15,7 @@
 	--button-color: #ffffff33;
 
 	--disabled: #333333;
-	--muted: color-mix(in srgb, var(--color, var(--bg-normal)) 75%, #0000);
+	--muted: color-mix(in srgb, var(--color, var(--bg-normal)) 75%, #fff9);
 }
 
 .mount.light {
@@ -300,7 +300,7 @@ button {
 	padding: 10px;
 	cursor: pointer;
 	backdrop-filter: blur(20px);
-	background-color: var(--button-color);
+	background-color: var(--muted);
 }
 
 .icon:hover,

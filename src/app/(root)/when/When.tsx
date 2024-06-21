@@ -1,5 +1,6 @@
 import React from 'react';
 import Countdown, { CountdownRenderProps } from 'react-countdown';
+import { formatDistance } from 'date-fns';
 
 interface P {
 	data: That;
@@ -11,7 +12,7 @@ const renderer = ({ days, hours, minutes, seconds, completed }: CountdownRenderP
 		return <h1>Your done!</h1>;
 	} else {
 		return (
-			<h1>
+			<h1 className='leading-normal text-5xl sm:text-6xl md:text-7xl xl:text-8xl'>
 				{days > 1 && days + (days === 1 ? ' day' : ' days')}
 				{days === 1 && '1 day'} {days >= 1 || (hours > 0 && hours + (hours === 1 ? ' hour' : ' hours'))}{' '}
 				{days <= 10 &&
@@ -23,18 +24,29 @@ const renderer = ({ days, hours, minutes, seconds, completed }: CountdownRenderP
 
 const When: React.FC<P> = ({ data, changeData }) => {
 	return (
-		<div className='size-full center'>
-			<button className='top-0 left-0 p-[2%] absolute link' onClick={() => changeData(undefined)}>
-				return
+		<>
+			<button className='top-0 left-0 m-[5%] absolute icon z-10' onClick={() => changeData(undefined)}>
+				<svg xmlns='http://www.w3.org/2000/svg' height='24px' viewBox='0 -960 960 960' width='24px'>
+					<path d='m368-417 157 157q19 19 19 45t-19 45q-19 18-45 18t-45-19L171-435q-9-9-14-21t-5-24q0-12 5-24t14-21l265-265q19-19 44.5-19t44.5 19q19 19 19 45t-19 45L368-543h403q26 0 44.5 18.5T834-480q0 26-18.5 44.5T771-417H368Z' />
+				</svg>
 			</button>
-			<div className='text-center flex justify-center items-center gap-5 flex-col'>
-				<h3>
-					<span className='capitalize select-none'>{data.name}</span> will end in
-				</h3>
-				{data.dates.start && <h1>{data.dates.start.getDate()}</h1>}
-				{data.dates.end && <Countdown date={data.dates.end} renderer={renderer} />}
+			<div className='h-full w-[95%] center'>
+				<div className='text-center flex justify-center items-center gap-5 flex-col'>
+					{data.dates.start ? (
+						<h3 className='text-[var(--text-low)]'>
+							You started <span className='capitalize select-none'>{data.name}</span>{' '}
+							{formatDistance(data.dates.start, new Date(), { addSuffix: true })} with
+						</h3>
+					) : (
+						<h3>
+							<span className='capitalize select-none'>{data.name}</span> will end in
+						</h3>
+					)}
+					{data.dates.end && <Countdown date={data.dates.end} renderer={renderer} />}
+					{data.dates.start && <h3 className='text-[var(--text-low)]'>left to go!</h3>}
+				</div>
 			</div>
-		</div>
+		</>
 	);
 };
 

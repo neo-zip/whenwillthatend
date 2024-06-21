@@ -1,9 +1,9 @@
 'use client';
 
 import React, { useContext, useState } from 'react';
-import Dropdown from './Dropdown';
-import { AnimatePresence } from 'framer-motion';
+import Suggestions from './Suggestions';
 import { ThatContext } from '@/providers/That';
+import { AnimatePresence, m } from 'framer-motion';
 
 interface P {
 	setResult: React.Dispatch<React.SetStateAction<That | undefined>>;
@@ -12,6 +12,7 @@ interface P {
 const Search: React.FC<P> = ({ setResult }) => {
 	const { that } = useContext(ThatContext);
 	const [focused, setFocused] = useState(false);
+	const [notfound, setNotfound] = useState(false);
 	const [queried, setQueried] = useState<string>();
 
 	const handleSubmit = (e: React.FormEvent) => {
@@ -21,22 +22,28 @@ const Search: React.FC<P> = ({ setResult }) => {
 			return;
 		}
 
-		getResults();
+		getResults(queried);
 	};
 
-	const getResults = (input?: string) => {
-		const found = that.findIndex((item) => (item.name === input ? input : queried));
+	const getResults = (input: string) => {
+		const found = that.findIndex((item) => item.name.toLowerCase() === input.toLowerCase());
 
 		if (found === -1) {
-			return;
+			setNotfound(true);
+
+			const timer = setTimeout(() => {
+				setNotfound(false);
+			}, 3000);
+
+			return () => clearTimeout(timer);
 		}
 
 		setResult(that[found]);
 	};
 
 	return (
-		<div className='size-full center'>
-			<form onSubmit={handleSubmit} className='text-center flex justify-center items-center gap-5 flex-col sm:flex-row'>
+		<div className='flex flex-col gap-5'>
+			<form onSubmit={handleSubmit} className='text-center flex justify-center items-center gap-5 flex-col sm:flex-row my-5'>
 				<h2>When will</h2>
 				<div>
 					<input
@@ -47,12 +54,25 @@ const Search: React.FC<P> = ({ setResult }) => {
 						}}
 						type='text'
 						placeholder='that...'
-						className='w-[90vw] sm:w-[25vw] bg-[var(--bg-normal)] text-[var(--link)] h-full text-5xl font-bold -mb-1 border-b-4 border-solid border-[var(--bg-high)] placeholder:text-[var(--bg-high)] focus:border-[var(--link)] focus:border-0 focus:border-b-4 focus:border-solid'
+						className={`w-[90vw] sm:w-[25vw] bg-[var(--bg-normal)] text-[var(--link)] h-full text-5xl font-bold -mb-1 border-b-4 border-solid border-[var(--bg-high)] placeholder:text-[var(--bg-high)] focus:border-[var(--link)] focus:border-0 focus:border-b-4 focus:border-solid ${
+							notfound && '!border-red-500 !text-red-500'
+						}`}
 					/>
-					<AnimatePresence>{focused && <Dropdown getResults={getResults} />}</AnimatePresence>
+					<AnimatePresence>
+						{notfound && (
+							<m.p
+								initial={{ opacity: 0, y: 50 }}
+								animate={{ opacity: 1, y: 0 }}
+								exit={{ opacity: 0, y: -50 }}
+								className='text-red-500 text-center w-full absolute -top-1/2'>
+								We couldn&apos;t find that one.
+							</m.p>
+						)}
+					</AnimatePresence>
 				</div>
 				<h2>end?</h2>
 			</form>
+			<Suggestions getResults={getResults} active={focused} />
 		</div>
 	);
 };
