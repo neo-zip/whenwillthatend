@@ -1,52 +1,74 @@
 'use client';
 
-import { createContext, useState } from 'react';
-
-const data: That[] = [
-	{
-		name: 'school',
-		dates: {
-			end: new Date(2025, 5, 2, 14, 5),
-		},
-	},
-	{
-		name: 'summer break',
-		dates: {
-			start: new Date(2024, 5, 1),
-			end: new Date(2024, 7, 12),
-		},
-	},
-	{
-		name: 'Today',
-		dates: {
-			start: new Date(2024, 5, 21),
-			end: new Date(2024, 5, 22),
-		},
-	},
-	{
-		name: 'Tomorrow',
-		dates: {
-			end: new Date(2024, 5, 23),
-		},
-	},
-];
+import { createContext, useEffect, useState } from 'react';
 
 interface ThatValues {
-	changeThat: (to: That[]) => void;
-	that: That[];
+	addThat: (newThat: Omit<That, 'id'>) => void;
+	getThat: (id: number) => That | undefined;
+	editThat: (id: number, updatedIdea: That) => void;
+	deleteThat: (id: number) => void;
+	that?: That[];
 }
 
 export const ThatContext = createContext<ThatValues>({
-	changeThat: () => {},
-	that: data,
+	addThat: () => {},
+	getThat: () => undefined,
+	editThat: () => {},
+	deleteThat: () => {},
+	that: undefined,
 });
 
 export const ThatProvider = ({ children }: { children: React.ReactNode }) => {
-	const [that, setThat] = useState<That[]>(data);
+	const [that, setThat] = useState<That[]>();
 
-	const changeThat = (to: That[]): void => {
-		setThat(to);
+	console.log(that);
+
+	useEffect(() => {
+		if (typeof window === 'undefined') {
+			return;
+		}
+
+		if (!that) {
+			setThat(JSON.parse(window.localStorage.getItem('that') ?? '[]'));
+			console.log('Loaded That');
+			return;
+		}
+
+		window.localStorage.setItem('that', JSON.stringify(that));
+		console.log('Saved That');
+	}, [that]);
+
+	const addThat = (newThat: Omit<That, 'id'>) => {
+		if (!that) {
+			return;
+		}
+
+		setThat([...that, { ...newThat, id: that.length + 1 }]);
 	};
 
-	return <ThatContext.Provider value={{ changeThat, that }}>{children}</ThatContext.Provider>;
+	const getThat = (id: number) => {
+		if (!that) {
+			return;
+		}
+
+		return that.find((self) => self.id === id);
+	};
+
+	const editThat = (id: number, updatedThat: That) => {
+		if (!that) {
+			return;
+		}
+
+		setThat(that.map((self) => (self.id === id ? updatedThat : self)));
+	};
+
+	const deleteThat = (id: number) => {
+		if (!that) {
+			return;
+		}
+
+		setThat(that.filter((self) => self.id != id));
+	};
+
+	return <ThatContext.Provider value={{ addThat, getThat, editThat, deleteThat, that }}>{children}</ThatContext.Provider>;
 };

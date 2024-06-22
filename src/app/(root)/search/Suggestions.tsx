@@ -1,9 +1,9 @@
 'use client';
 
+import Loader from '@/components/loader/Loader';
 import { ThatContext } from '@/providers/That';
 import React, { useContext } from 'react';
 import Marquee from 'react-fast-marquee';
-import { m } from 'framer-motion';
 
 interface P {
 	getResults: (input: string) => void;
@@ -12,6 +12,10 @@ interface P {
 
 const Suggestions: React.FC<P> = ({ getResults, active }) => {
 	const { that } = useContext(ThatContext);
+
+	if (!that) {
+		return <Loader />;
+	}
 
 	return (
 		<div className='w-[100vw] max-w-full'>
@@ -25,6 +29,7 @@ const Suggestions: React.FC<P> = ({ getResults, active }) => {
 				{that.map((item, i) => {
 					return (
 						<button
+							aria-label={`Visit ${item.name}`}
 							role='button'
 							className={`mx-1 md:mx-5 p-5 link font-bold capitalize text-2xl ${active && 'underline'}`}
 							onClick={() => getResults(item.name)}

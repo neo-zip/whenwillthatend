@@ -12,7 +12,7 @@ Frontend
 
 Backend
 
--  Maybe
+-  Local Storage
 
 ## Getting Started
 

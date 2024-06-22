@@ -4,6 +4,8 @@ import React, { useContext, useState } from 'react';
 import Suggestions from './Suggestions';
 import { ThatContext } from '@/providers/That';
 import { AnimatePresence, m } from 'framer-motion';
+import Loader from '@/components/loader/Loader';
+import Add from './Add';
 
 interface P {
 	setResult: React.Dispatch<React.SetStateAction<That | undefined>>;
@@ -14,6 +16,10 @@ const Search: React.FC<P> = ({ setResult }) => {
 	const [focused, setFocused] = useState(false);
 	const [notfound, setNotfound] = useState(false);
 	const [queried, setQueried] = useState<string>();
+
+	if (!that) {
+		return <Loader />;
+	}
 
 	const handleSubmit = (e: React.FormEvent) => {
 		e.preventDefault();
@@ -42,7 +48,7 @@ const Search: React.FC<P> = ({ setResult }) => {
 	};
 
 	return (
-		<div className='flex flex-col gap-5'>
+		<div className='flex flex-col gap-5 items-center'>
 			<form onSubmit={handleSubmit} className='text-center flex justify-center items-center gap-5 flex-col sm:flex-row my-5'>
 				<h2>When will</h2>
 				<div>
@@ -54,7 +60,7 @@ const Search: React.FC<P> = ({ setResult }) => {
 						}}
 						type='text'
 						placeholder='that...'
-						className={`w-[90vw] sm:w-[25vw] bg-[var(--bg-normal)] text-[var(--link)] h-full text-5xl font-bold -mb-1 border-b-4 border-solid border-[var(--bg-high)] placeholder:text-[var(--bg-high)] focus:border-[var(--link)] focus:border-0 focus:border-b-4 focus:border-solid ${
+						className={`w-[90vw] sm:w-[25vw] bg-[var(--bg-normal)] text-[var(--link)] h-full text-5xl font-bold -mb-1 border-b-4 border-solid border-[var(--bg-high)] placeholder:text-[var(--bg-high)] focus:border-[var(--link)] focus:border-0 focus:border-b-4 focus:border-solid rounded-none ${
 							notfound && '!border-red-500 !text-red-500'
 						}`}
 					/>
@@ -64,7 +70,7 @@ const Search: React.FC<P> = ({ setResult }) => {
 								initial={{ opacity: 0, y: 50 }}
 								animate={{ opacity: 1, y: 0 }}
 								exit={{ opacity: 0, y: -50 }}
-								className='text-red-500 text-center w-full absolute -top-1/2'>
+								className='text-red-500 text-center w-full absolute -top-1/4'>
 								We couldn&apos;t find that one.
 							</m.p>
 						)}
@@ -72,7 +78,7 @@ const Search: React.FC<P> = ({ setResult }) => {
 				</div>
 				<h2>end?</h2>
 			</form>
-			<Suggestions getResults={getResults} active={focused} />
+			{that.length < 1 ? <Add /> : <Suggestions getResults={getResults} active={focused} />}
 		</div>
 	);
 };
