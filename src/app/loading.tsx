@@ -3,7 +3,7 @@ import React from 'react';
 
 const Loading: React.FC = () => {
 	return (
-		<div className='overlay center'>
+		<div className='size-full center'>
 			<Loader />
 		</div>
 	);

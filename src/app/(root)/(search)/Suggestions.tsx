@@ -22,6 +22,7 @@ const Suggestions: React.FC<P> = ({ getResults, active }) => {
 			<Marquee
 				autoFill
 				pauseOnHover
+				speed={50}
 				style={{
 					maskImage:
 						'linear-gradient(to right, rgba(0, 0, 0, 0) 15%, rgb(0, 0, 0) 50%, rgb(0, 0, 0) 50%, rgba(0, 0, 0, 0) 85%)',

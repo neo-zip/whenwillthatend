@@ -21,8 +21,6 @@ export const ThatContext = createContext<ThatValues>({
 export const ThatProvider = ({ children }: { children: React.ReactNode }) => {
 	const [that, setThat] = useState<That[]>();
 
-	console.log(that);
-
 	useEffect(() => {
 		if (typeof window === 'undefined') {
 			return;

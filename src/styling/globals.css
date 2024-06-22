@@ -201,21 +201,19 @@ button {
 }
 
 .input {
-	padding: 20px 20px;
+	padding: 20px;
 	margin-bottom: 15px;
 
 	height: 50px;
-	min-width: 400px;
 
-	border: none;
 	resize: none;
 
 	background-color: transparent;
 	border: 2px solid var(--button-color);
 	border-radius: var(--border-radius);
 
-	color: var(--text-h1);
-	font-size: 16px;
+	color: var(--text-normal);
+	font-size: 1.25em;
 
 	transition: var(--transition);
 }
@@ -347,7 +345,6 @@ button {
 /* text */
 
 .label {
-	font-size: 0.8em;
 	text-transform: uppercase;
 	font-weight: bold;
 	user-select: none;

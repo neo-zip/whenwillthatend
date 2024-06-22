@@ -5,7 +5,8 @@ import Suggestions from './Suggestions';
 import { ThatContext } from '@/providers/That';
 import { AnimatePresence, m } from 'framer-motion';
 import Loader from '@/components/loader/Loader';
-import Add from './Add';
+import Add from '../(add)/Add';
+import Link from 'next/link';
 
 interface P {
 	setResult: React.Dispatch<React.SetStateAction<That | undefined>>;
@@ -78,7 +79,13 @@ const Search: React.FC<P> = ({ setResult }) => {
 				</div>
 				<h2>end?</h2>
 			</form>
-			{that.length < 1 ? <Add /> : <Suggestions getResults={getResults} active={focused} />}
+			{that.length < 1 ? (
+				<Link href='/add' className='a p-5 link font-bold capitalize text-2xl'>
+					Add An Event
+				</Link>
+			) : (
+				<Suggestions getResults={getResults} active={focused} />
+			)}
 		</div>
 	);
 };
