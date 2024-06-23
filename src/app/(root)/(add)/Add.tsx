@@ -17,7 +17,6 @@ const Add: React.FC<P> = ({ setup }) => {
 	const { addThat } = useContext(ThatContext);
 	const [slide, setSlide] = useState(0);
 	const [data, setData] = useState<Partial<That>>();
-	const [value, setValue] = useState<Date | null>(null);
 
 	const handleContinue = (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
@@ -25,7 +24,11 @@ const Add: React.FC<P> = ({ setup }) => {
 		setSlide((self) => self + 1);
 	};
 
-	console.log(data);
+	const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+		e.preventDefault();
+
+		addThat(data as That);
+	};
 
 	const slides = [
 		<form onSubmit={(e) => handleContinue(e)}>
@@ -67,7 +70,7 @@ const Add: React.FC<P> = ({ setup }) => {
 				</div>
 			</div>
 		</m.form>,
-		<form onSubmit={(e) => handleContinue(e)}>
+		<form onSubmit={(e) => handleSubmit(e)}>
 			<m.div
 				initial='hidden'
 				animate='visible'

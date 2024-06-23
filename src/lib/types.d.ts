@@ -12,7 +12,7 @@ interface That {
 	name: string;
 	dates: {
 		start?: Date;
-		end?: Date;
+		end: Date;
 	};
 	id: number;
 }

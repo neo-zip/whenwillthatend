@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import Countdown, { CountdownRenderProps } from 'react-countdown';
-import { formatDistance } from 'date-fns';
+import { formatDistance, isBefore } from 'date-fns';
 import { useHotkeys } from '@mantine/hooks';
 import { ThatContext } from '@/providers/That';
 
@@ -28,6 +28,8 @@ const When: React.FC<P> = ({ data, changeData }) => {
 	const { deleteThat } = useContext(ThatContext);
 	useHotkeys([['escape', () => changeData(undefined)]]);
 
+	const isInPast = isBefore(data.dates.end, new Date());
+
 	const handleDelete = () => {
 		deleteThat(data.id);
 		changeData(undefined);
@@ -50,14 +52,16 @@ const When: React.FC<P> = ({ data, changeData }) => {
 					{data.dates.start ? (
 						<h3 className='text-[var(--text-low)]'>
 							You started <span className='capitalize select-none'>{data.name}</span>{' '}
-							{formatDistance(data.dates.start, new Date(), { addSuffix: true })} with
+							{formatDistance(data.dates.start, new Date(), { addSuffix: true })}{' '}
+							{isInPast ? 'which ended ' + formatDistance(data.dates.end, new Date(), { addSuffix: true }) : 'with'}
 						</h3>
 					) : (
 						<h3>
-							<span className='capitalize select-none'>{data.name}</span> will end in
+							<span className='capitalize select-none'>{data.name}</span>{' '}
+							{isInPast ? 'ended ' + formatDistance(data.dates.end, new Date(), { addSuffix: true }) : 'will end in'}
 						</h3>
 					)}
-					{data.dates.end && <Countdown date={data.dates.end} renderer={renderer} />}
+					<Countdown date={data.dates.end} renderer={renderer} />
 					{data.dates.start && <h3 className='text-[var(--text-low)]'>left to go!</h3>}
 				</div>
 			</div>
